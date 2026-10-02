@@ -4,7 +4,7 @@ Policy-invariant fictional analogues for using cloud language models on sensitiv
 
 **Status: work in progress.** The verifier and harness are implemented and tested on synthetic data. The model-backed transformer is an untested stub. There is no benchmark yet. See [Status](#8-status).
 
-**Provenance.** This is the first public commit. It was written on 1 October 2026 with a coding agent (Claude), from the author's idea: that a local model could strip or mutate private details before a cloud model sees a case. The framing as a policy-invariant analogy was developed in conversation with Claude. It is not a cut of an older private repository, and the code has not been used on real data.
+**Provenance.** The idea is the author's: a local model replaces a sensitive case with a fictional analogue, the decision-maker signs off that the analogue is adequate, and a more capable cloud model answers the hypothetical without seeing the case (worked out in September 2026; the student-essay and HR examples are from those notes). The formalisation as a policy-invariant check, and this implementation, were done with a coding agent (Claude) on 1 October 2026. This is the first public commit; it is not a cut of an older repository, and the code has not been used on real data.
 
 ## 1. Problem
 
