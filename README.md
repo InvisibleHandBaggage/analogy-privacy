@@ -102,6 +102,8 @@ Run it: `python -m examples.hr_leave_policy`.
 - **Back-mapping.** Literal, case-insensitive, whole-word string replacement. It does not handle partial references, pronouns, inflections or paraphrase, and does not map numbers back. Errors compound along the round trip, hence the log of mapping, sent text and answer.
 - **Transfer to the cloud answer.** Same formal outcome does not guarantee the cloud model's advice is the same on the analogue.
 - **Cross-query linkage** is not addressed.
+- **The question is not audited.** `release_to_cloud` sends the notice, the user's question and the analogue. Only the analogue passes the invariance and leak checks; the question is free text and could carry case content. Keep it generic.
+- **Scope of the gate.** The library refuses to release an analogue that failed its checks, lost its sign-off, or changed since it was cleared. It is a check on one object at one moment, not an enforcement layer around the caller, who holds the original and the `send` callable throughout.
 - **Legal status: open question.** It is an unverified hypothesis that a well-built analogue might count as de-identified under HIPAA (Safe Harbor or Expert Determination) or as anonymised under GDPR. No claim is made, and nothing in this repository is legal advice or a compliance claim. It needs legal and statistical expert review.
 
 ## 7. Prior art

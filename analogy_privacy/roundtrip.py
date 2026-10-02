@@ -66,6 +66,7 @@ class AuditRecord:
     status: str = "pending"  # "pending" | "cleared"
     signoff: Optional[SignOff] = None
     uniqueness_assessed: Optional[bool] = None  # recorded at clearance
+    cleared_analogue_digest: Optional[str] = None  # digest of the analogue the checks ran on
     sent_text: Optional[str] = None  # exactly what was passed to `send`
     cloud_answer: Optional[str] = None
     back_mapped_answer: Optional[str] = None
@@ -197,7 +198,12 @@ def mark_cleared(
 
     if reasons:
         raise ClearanceRefused(reasons)
-    return replace(record, status="cleared", uniqueness_assessed=leak.uniqueness_assessed)
+    return replace(
+        record,
+        status="cleared",
+        uniqueness_assessed=leak.uniqueness_assessed,
+        cleared_analogue_digest=record.analogue_digest,
+    )
 
 
 def back_map(answer: str, mapping: Mapping[str, str]) -> Tuple[str, Dict[str, int], Tuple[str, ...]]:
@@ -238,6 +244,8 @@ def release_to_cloud(
     reasons: List[str] = []
     if record.status != "cleared":
         reasons.append("record is not cleared")
+    elif record.cleared_analogue_digest != record.analogue_digest:
+        reasons.append("analogue changed since clearance; rerun the checks and clear again")
     if record.signoff_status != "approved":
         reasons.append("adequacy sign-off is %s" % record.signoff_status)
     if reasons:

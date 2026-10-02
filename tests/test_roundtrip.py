@@ -214,6 +214,20 @@ class ReleaseTests(Fixture):
         with self.assertRaises(ClearanceRefused):
             release_to_cloud(rec, lambda t: "x")
 
+    def test_refuses_if_analogue_changed_and_reapproved_after_clearance(self):
+        # Clearance must be bound to the analogue the checks ran on. Editing the
+        # analogue and signing off again must not bypass a fresh mark_cleared.
+        rec = self.cleared()
+        changed = dataclasses.replace(rec, analogue=rec.analogue.with_values({"dept": "Support"}))
+        reapproved = sign_off(changed, "R. Eviewer", True)
+        self.assertEqual(reapproved.status, "cleared")
+        self.assertEqual(reapproved.signoff_status, "approved")
+        calls = []
+        with self.assertRaises(ClearanceRefused) as cm:
+            release_to_cloud(reapproved, lambda t: calls.append(t) or "x")
+        self.assertEqual(calls, [])
+        self.assertIn("changed since clearance", " ".join(cm.exception.reasons))
+
 
 class BackMapTests(unittest.TestCase):
     def test_longest_key_first_and_no_chaining(self):
