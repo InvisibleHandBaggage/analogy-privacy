@@ -19,6 +19,8 @@ A local model maps each real case to a **fictional analogue**: a case that keeps
 
 Informal example. The real case: "Alice from accounting had cancer last year and missed six months." The analogue: "Bruce had a car crash and missed six months." The question put to the cloud model: what does the leave policy dictate? A decision-maker signs off that the analogue is adequate for that question ("analogy adequacy").
 
+A second setting, from teaching. An instructor wants a frontier model's view on a student's essay, but the institution forbids sending student work off its machines. Removing the name is enough for a multiple-choice answer sheet; an essay that relates the student's own experience to a model from the course carries identity in its content. There the analogue has bite: the parts of the rubric that can be stated as rules are checked on the stand-in, and the instructor judges the rest. The framing is the same in both settings: the local side asks a more capable model a hypothetical, how it would decide a case like this one or mark an essay like this one, and never sends the case or the essay.
+
 What changes relative to ZDR is what can be inspected. The analogue is a concrete text on the user's machine before anything is sent, and it can be tested against executable criteria (section 3). Those criteria are heuristics, not a proof of anonymity.
 
 ```
@@ -77,6 +79,7 @@ Original (stays local): `Alice Nonesuch of Accounting was absent for 6 months la
 | 4 | Names swapped; department and quarter kept and allow-listed | pass | pass (allow-listed) | $k_R=1$, $k_R^S=1$: **flagged** | not cleared |
 | 5 | As 1, but the second policy reads the condition, tagged identifying | **fail** on second policy | pass | ok | not cleared; probe flags `condition` as mis-tagged |
 | 6 | Condition re-tagged decision-relevant and kept; identifiers changed | pass (both policies) | pass (`cancer` allowed, listed) | $k_R=5$, $k_R^S=13$ | checks pass; awaits sign-off |
+| 7 | Round trip on the analogue from scenario 1 | n/a | n/a | n/a | refused before sign-off; after sign-off, released through a fake `send` and the answer back-mapped |
 
 Scenario 6 is the case where the sensitive attribute is itself decision-relevant. The category is kept, identifiers are changed, and the cost shows up in the numbers: with the condition in $Q$ the analogue's anonymity set drops from 10 to 5. Whether that is acceptable is a human decision, which is what the sign-off is for.
 
